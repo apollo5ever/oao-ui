@@ -4,7 +4,7 @@
 
 ### Bootstrap Video (pedro)
 
-### Install Bootstrap (apollo)
+### ~~Install Bootstrap (apollo)~~
 
 ### Add Contracts to Repo (apollo)
 
