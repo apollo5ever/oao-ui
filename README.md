@@ -6,6 +6,8 @@
 
 ### Install Bootstrap (apollo)
 
+### Add Contracts to Repo (apollo)
+
 ### Create Navbar (quest)
 
 ### Create Search bar in Navbar (quest)
