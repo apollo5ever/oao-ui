@@ -4,7 +4,7 @@
 
 ### Bootstrap Video (pedro)
 
-### Install Bootstrap
+### Install Bootstrap (apollo)
 
 ### Create Navbar (quest)
 
