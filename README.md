@@ -1,8 +1,35 @@
-# React + Vite
+# OAO UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# To-Do
 
-Currently, two official plugins are available:
+### Bootstrap Video (pedro)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Install Bootstrap
+
+### Create Navbar (quest)
+
+### Create Search bar in Navbar (quest)
+
+### Create Card Space (quest)
+
+### Write function to retrieve contract data
+
+### Parse proposal info from contract data
+
+### Write function to make new proposal tx
+
+### Write function to make approval tx
+
+### Write function for Claim Seat tx
+
+### Write function for Update tx
+
+### Write function for Store tx
+
+### Write function to check user balance for OAO tokens
+
+### Store user's oao role in state
+
+### Create UI for each contract call
+
+### Display UI according to user role and proposal info
