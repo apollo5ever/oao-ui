@@ -2,7 +2,7 @@
 
 # To-Do
 
-### Bootstrap Video (pedro)
+### ~~Bootstrap Video (pedro)~~
 
 ### ~~Install Bootstrap (apollo)~~
 
