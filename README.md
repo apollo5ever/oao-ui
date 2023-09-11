@@ -14,7 +14,7 @@
 
 ### Create Card Space (quest)
 
-### Write function to retrieve contract data
+### Write function to retrieve contract data (apollo)
 
 ### Parse proposal info from contract data
 
