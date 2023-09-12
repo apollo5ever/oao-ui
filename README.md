@@ -16,7 +16,7 @@
 
 ### ~~Write function to retrieve contract data (apollo)~~
 
-### Parse proposal info from contract data (apollo)
+### ~~Parse proposal info from contract data (apollo)~~
 
 ### Write function to make new proposal tx
 
