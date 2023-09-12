@@ -1,13 +1,15 @@
 import to from "await-to-js";
 import { useContext } from "react";
 import { LoginContext } from "./LoginContext";
-import LoggerContext, { LOG } from "@/components/providers/LoggerContext.jsx";
+//import LoggerContext, { LOG } from "@/components/providers/LoggerContext.jsx";
 
 export function useGetSC() {
   const [state, setState] = useContext(LoginContext);
-  const logger = useContext(LoggerContext);
+  // const logger = useContext(LoggerContext);
 
   async function getSC(scid, keysstring) {
+    console.log("getsc ", scid);
+    console.log("state", state);
     if (state.daemon == "rpc") {
       const deroBridgeApi = state.deroBridgeApiRef.current;
 
@@ -16,9 +18,9 @@ export function useGetSC() {
           scid: scid,
           variables: true,
           code: true,
-          keysstring: keysstring,
         })
       );
+      console.log("res", res);
       return res.data.result;
     } else if (state.daemon == "pools") {
       let data;
@@ -56,7 +58,7 @@ export function useGetSC() {
       let body = await res.json();
       let scData = body.result;
       console.log(`scData ${scid}`, scData);
-      logger(LOG.API, "useGetSC", `scData ${scid}`, scData);
+      // logger(LOG.API, "useGetSC", `scData ${scid}`, scData);
 
       return scData;
     }

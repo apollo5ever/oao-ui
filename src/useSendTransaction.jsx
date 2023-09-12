@@ -1,7 +1,6 @@
-import React, { useState, useContext } from 'react';
-import { LoginContext } from './LoginContext';
-import to from 'await-to-js';
-import initialize from './initialize';
+import React, { useState, useContext } from "react";
+import { LoginContext } from "./LoginContext";
+import to from "await-to-js";
 
 export function useSendTransaction() {
   const [state, setState] = useContext(LoginContext);
@@ -9,8 +8,8 @@ export function useSendTransaction() {
   const rpcSend = React.useCallback(async (d) => {
     const deroBridgeApi = state.deroBridgeApiRef.current;
 
-    const [err, res] = await to(deroBridgeApi.wallet('start-transfer', d));
-    console.log('useSendTransaction RPC res', res);
+    const [err, res] = await to(deroBridgeApi.wallet("start-transfer", d));
+    console.log("useSendTransaction RPC res", res);
     return res.data.result.txid;
   });
 
@@ -29,15 +28,15 @@ export function useSendTransaction() {
     } else {
       const wasmData = {
         Transfers: data.transfers,
-        SC_Code: '',
+        SC_Code: "",
         scid: data.scid,
         SC_RPC: data.sc_rpc,
         Ringsize: data.ringsize,
         Fees: data.fees,
       };
 
-      console.log('WINDOW', window);
-      console.log('STATE', state);
+      console.log("WINDOW", window);
+      console.log("STATE", state);
       let fileData = JSON.parse(state.walletList[state.activeWallet].fileData);
       console.log(fileData);
       console.log(JSON.stringify(fileData));
@@ -48,31 +47,31 @@ let err=  window.OpenWallet(state.walletList[0].hexSeed,pass,JSON.stringify(file
 console.log(err)
 console.log(state.walletList[0]) */
 
-      let asyncKey = 'tx';
+      let asyncKey = "tx";
       const tx = await new Promise((resolve) => {
         state.worker.onmessage = (event) => {
           resolve(event.data);
         };
 
         state.worker.postMessage({
-          functionName: 'WalletTransfer',
+          functionName: "WalletTransfer",
           args: [
-            'key',
+            "key",
             state.walletList[state.activeWallet].name,
             JSON.stringify(wasmData),
           ],
         });
       });
       //const tx = state.worker.postMessage("WalletTransfer",["tx", state.walletList[0].hexSeed, JSON.stringify(wasmData)])
-      console.log('TX', tx);
-      console.log('wasmData', wasmData);
+      console.log("TX", tx);
+      console.log("wasmData", wasmData);
 
       const interval = setInterval(async () => {
         if (tx) {
           clearInterval(interval);
           console.log(tx);
 
-          let asyncKey2 = 'sent';
+          let asyncKey2 = "sent";
           // const send = window.WalletSendTransaction("sent", state.walletList[0].hexSeed, window[asyncKey].txHex)
           const send = await new Promise((resolve) => {
             state.worker.onmessage = (event) => {
@@ -80,15 +79,15 @@ console.log(state.walletList[0]) */
             };
 
             state.worker.postMessage({
-              functionName: 'WalletSendTransaction',
+              functionName: "WalletSendTransaction",
               args: [
-                'key',
+                "key",
                 state.walletList[state.activeWallet].name,
                 tx.key.txHex,
               ],
             });
           });
-          console.log('send', send);
+          console.log("send", send);
           //console.log("window[asyncKey2]",window[asyncKey2])
         }
       }, 100); // check every 100ms
