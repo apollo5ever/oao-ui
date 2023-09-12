@@ -20,7 +20,7 @@
 
 ### Write function to make new proposal tx
 
-### Write function to make approval tx
+### ~~Write function to make approval tx (apollo)~~
 
 ### Write function for Claim Seat tx
 
