@@ -18,7 +18,7 @@
 
 ### ~~Parse proposal info from contract data (apollo)~~
 
-### Write function to make new proposal tx
+### Write function to make new proposal tx (apollo)
 
 ### ~~Write function to make approval tx (apollo)~~
 
