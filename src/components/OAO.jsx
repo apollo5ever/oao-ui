@@ -43,6 +43,25 @@ export default function OAO({ OAO, ceo, seat }) {
     });
   };
 
+  const claimSeat = () => {
+    sendTransaction({
+      scid: OAO.scid,
+      ringsize: 2,
+      sc_rpc: [
+        {
+          name: "entrypoint",
+          value: "ClaimSeat",
+          datatype: "S",
+        },
+        {
+          name: "seat",
+          datatype: "U",
+          value: seat.id,
+        },
+      ],
+    });
+  };
+
   const propose = (e) => {
     e.preventDefault();
     let k = e.target.k.value;
@@ -102,7 +121,26 @@ export default function OAO({ OAO, ceo, seat }) {
   return (
     <>
       <h1>{OAO.name}</h1>
-      {seat.id >= 0 ? <>You control seat: {seat.id}</> : ""}
+      <div className="oaoInfo">
+        <h3>Treasury</h3>
+        {Object.keys(OAO.treasury).map((key) => (
+          <p>
+            {key}: {OAO.treasury[key].ALLOWANCE}/{OAO.treasury[key].AMOUNT}
+          </p>
+        ))}
+      </div>
+      {seat.id >= 0 ? (
+        <>
+          <p>You control seat: {seat.id}</p>
+          {seat.owner ? (
+            <button onClick={claimSeat}>Claim Your Seat</button>
+          ) : (
+            ""
+          )}
+        </>
+      ) : (
+        ""
+      )}
       {ceo ? <>You are the CEO.</> : ""}
       {OAO.k ? (
         <>
@@ -131,9 +169,16 @@ export default function OAO({ OAO, ceo, seat }) {
       ) : (
         <>
           <form onSubmit={propose}>
-            <input id="k" />
-            <input id="v" />
-            <input id="t" />
+            <input placeholder="key" id="k" />
+            <input placeholder="value" id="v" />
+            <label>
+              <input type="radio" id="t" name="datatype" value="1" />
+              Integer
+            </label>
+            <label>
+              <input type="radio" id="t" name="datatype" value="0" />
+              String
+            </label>
             <button type="submit">Propose</button>
           </form>
         </>

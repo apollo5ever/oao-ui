@@ -28,7 +28,6 @@ export default function parseOAO(data,scid){
                 OAO.u = vars.u
                 OAO.s = vars.s
                 OAO.board = []
-                OAO.treasury_dero = vars.TREASURY_DERO 
                 OAO.balances = balances
 
                 let seatSearch = new RegExp(`SEAT_\\d(?!_OWNER)`);
@@ -44,6 +43,22 @@ export default function parseOAO(data,scid){
                         OAO.board.push({id:parseInt(seat.substring(seat.length,seat.length-1)), scid:scid,owner:owner})
                     }
                 }
+
+                let treasurySearch = new RegExp(`TREASURY_\\w+`);
+
+                let treasury = {};
+
+                for(var key of Object.keys(vars)){
+                     if(treasurySearch.test(key)){
+                         let asset = key.substring(9); // remove "TREASURY_" prefix
+                            let scid = vars[`SCID_${asset}`] || "0000000000000000000000000000000000000000000000000000000000000000";
+                             let amount = vars[`TREASURY_${asset}`] || 0;
+                             
+                     let allowance = vars[`ALLOWANCE_${asset}`] || 0;
+                        treasury[asset] = {SCID: scid, AMOUNT: amount, ALLOWANCE: allowance};
+    }
+}
+                OAO.treasury=treasury
                 console.log(OAO)
             }
                 //construct oao object
