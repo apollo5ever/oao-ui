@@ -26,7 +26,7 @@ const LoginProvider = (props) => {
   const [state, setState] = useState({
     activeWallet: 0,
     walletList: walletList,
-    daemon: "rpc",
+    daemon: "pools",
     OAO: {},
     ceo: 0,
     seat: -1,
