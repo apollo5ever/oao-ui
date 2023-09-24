@@ -1,6 +1,7 @@
 import React from "react";
 import hex2a from "../hex2a";
 import { useSendTransaction } from "../useSendTransaction";
+import Treasury from "./treasury";
 
 export default function OAO({ OAO, ceo, seat }) {
   const [sendTransaction] = useSendTransaction();
@@ -122,12 +123,7 @@ export default function OAO({ OAO, ceo, seat }) {
     <>
       <h1>{OAO.name}</h1>
       <div className="oaoInfo">
-        <h3>Treasury</h3>
-        {Object.keys(OAO.treasury).map((key) => (
-          <p>
-            {key}: {OAO.treasury[key].ALLOWANCE}/{OAO.treasury[key].AMOUNT}
-          </p>
-        ))}
+        <Treasury OAO={OAO} />
       </div>
       {seat.id >= 0 ? (
         <>
@@ -142,6 +138,10 @@ export default function OAO({ OAO, ceo, seat }) {
         ""
       )}
       {ceo ? <>You are the CEO.</> : ""}
+      <h3>Board</h3>
+      <p>
+        {OAO.quorum}/{OAO.board.length}
+      </p>
       {OAO.k ? (
         <>
           <h3>Proposal</h3>
