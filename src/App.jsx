@@ -88,6 +88,8 @@ function App() {
       </form>
       {state.OAO.version == "OAO" ? (
         <OAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
+      ) : state.OAO.version == "mOAO" ? (
+        <OAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
       ) : (
         ""
       )}
