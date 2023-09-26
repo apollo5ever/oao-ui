@@ -20,6 +20,7 @@ function App() {
   const [getBalance] = useGetBalance();
   const [state, setState] = useContext(LoginContext);
   const deroBridgeApiRef = useRef();
+  const [getAddress] = useRPCWallet();
   //const [walletInfo, isLoading, error, fetchWalletInfo] = useRPCWallet();
 
   //if user has loaded up contract using search component then state object will contain things like CEO, SEAT_1, QUORUM, APPROVAL
@@ -33,11 +34,17 @@ function App() {
     let OAO = parseOAO(sc, e.target.scid.value);
     let ceo = await getBalance(OAO.ceo);
     let seat = -1;
+    console.log(state);
     for (var i = 0; i < OAO.board.length; i++) {
       console.log("seat balance: ", OAO.board[i]);
       let bal = await getBalance(OAO.board[i].scid);
       if (bal) {
         console.log("balance for seat is ", bal);
+        seat = OAO.board[i];
+        break;
+      }
+      if (state.walletList[0].address === OAO.board[i].owner) {
+        console.log("owner match!");
         seat = OAO.board[i];
         break;
       }
@@ -53,6 +60,18 @@ function App() {
       const [err] = await to(deroBridgeApi.init());
       if (err) {
       } else {
+        const [err0, res0] = await to(deroBridgeApi.wallet("get-address", {}));
+
+        console.log("get-address-error", err0);
+        console.log(res0);
+        if (err0 == null) {
+          let newWalletList = state.walletList;
+          newWalletList[0].address = res0.data.result.address;
+          setState((state) => ({
+            ...state,
+            walletList: newWalletList,
+          }));
+        }
         setState((state) => ({ ...state, deroBridgeApiRef: deroBridgeApiRef }));
       }
     };
@@ -63,16 +82,17 @@ function App() {
 
   return (
     <>
+      <form onSubmit={handleSubmit}>
+        <input placeholder="Enter OAO SCID" id="scid"></input>
+        <button type="submit">submit</button>
+      </form>
       {state.OAO.version == "OAO" ? (
+        <OAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
+      ) : state.OAO.version == "mOAO" ? (
         <OAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
       ) : (
         ""
       )}
-
-      <form onSubmit={handleSubmit}>
-        <input id="scid"></input>
-        <button type="submit">submit</button>
-      </form>
     </>
   );
 }

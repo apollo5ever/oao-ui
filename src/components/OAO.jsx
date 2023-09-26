@@ -1,6 +1,7 @@
 import React from "react";
 import hex2a from "../hex2a";
 import { useSendTransaction } from "../useSendTransaction";
+import Treasury from "./treasury";
 
 export default function OAO({ OAO, ceo, seat }) {
   const [sendTransaction] = useSendTransaction();
@@ -38,6 +39,25 @@ export default function OAO({ OAO, ceo, seat }) {
           name: "entrypoint",
           value: "Store",
           datatype: "S",
+        },
+      ],
+    });
+  };
+
+  const claimSeat = () => {
+    sendTransaction({
+      scid: OAO.scid,
+      ringsize: 2,
+      sc_rpc: [
+        {
+          name: "entrypoint",
+          value: "ClaimSeat",
+          datatype: "S",
+        },
+        {
+          name: "seat",
+          datatype: "U",
+          value: seat.id,
         },
       ],
     });
@@ -102,8 +122,26 @@ export default function OAO({ OAO, ceo, seat }) {
   return (
     <>
       <h1>{OAO.name}</h1>
-      {seat.id >= 0 ? <>You control seat: {seat.id}</> : ""}
+      <div className="oaoInfo">
+        <Treasury OAO={OAO} />
+      </div>
+      {seat.id >= 0 ? (
+        <>
+          <p>You control seat: {seat.id}</p>
+          {seat.owner ? (
+            <button onClick={claimSeat}>Claim Your Seat</button>
+          ) : (
+            ""
+          )}
+        </>
+      ) : (
+        ""
+      )}
       {ceo ? <>You are the CEO.</> : ""}
+      <h3>Board</h3>
+      <p>
+        {OAO.quorum}/{OAO.board.length}
+      </p>
       {OAO.k ? (
         <>
           <h3>Proposal</h3>
@@ -131,9 +169,16 @@ export default function OAO({ OAO, ceo, seat }) {
       ) : (
         <>
           <form onSubmit={propose}>
-            <input id="k" />
-            <input id="v" />
-            <input id="t" />
+            <input placeholder="key" id="k" />
+            <input placeholder="value" id="v" />
+            <label>
+              <input type="radio" id="t" name="datatype" value="1" />
+              Integer
+            </label>
+            <label>
+              <input type="radio" id="t" name="datatype" value="0" />
+              String
+            </label>
             <button type="submit">Propose</button>
           </form>
         </>

@@ -53,24 +53,17 @@ Function Update(code String) Uint64
 100 RETURN 1
 End Function
 
-Function Store(k String, u Uint64, s String) Uint64
-20 IF k != LOAD("k") THEN GOTO 999
-40 IF LOAD("APPROVE") < LOAD("QUORUM") THEN GOTO 999
-45 STORE("APPROVE",0)
-50 dim t as Uint64
-60 let t = LOAD("t")
-110 IF t == 0 THEN GOTO 150
-120 IF t == 1 THEN GOTO 170
-130 IF s!=LOAD("s") THEN GOTO 999
-135 STORE(k, HEX(s))
-140 RETURN 0
-150 IF s!=LOAD("s") THEN GOTO 999
-155 STORE(k, s)
-160 RETURN 0
-170 IF u!=LOAD("u") THEN GOTO 999
-175 STORE(k,u)
-180 RETURN 0
-999 RETURN 1
+Function Store() Uint64
+10 IF LOAD("APPROVE") < LOAD("QUORUM") THEN GOTO 100
+20 STORE("APPROVE",0)
+30 IF LOAD("t") == 1 THEN GOTO 60
+40 STORE(LOAD("k"), LOAD("s"))
+45 STORE("k","")
+50 RETURN 0
+60 STORE(LOAD("k"),LOAD("u"))
+65 STORE("k","")
+99 RETURN 0
+100 RETURN 1
 End Function
 
 Function Withdraw(amount Uint64, token String) Uint64
