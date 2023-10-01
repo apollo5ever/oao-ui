@@ -13,6 +13,8 @@ import to from "await-to-js";
 import { useGetBalance } from "./useGetBalance";
 import hex2a from "./hex2a";
 import OAO from "./components/OAO";
+import MOAO from "./components/mOAO";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -89,7 +91,7 @@ function App() {
       {state.OAO.version == "OAO" ? (
         <OAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
       ) : state.OAO.version == "mOAO" ? (
-        <OAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
+        <MOAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
       ) : (
         ""
       )}

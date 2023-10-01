@@ -29,6 +29,7 @@ export default function parseOAO(data,scid){
                 OAO.s = vars.s
                 OAO.board = []
                 OAO.balances = balances
+                OAO.code = code
 
                 let seatSearch = new RegExp(`SEAT_\\d(?!_OWNER)`);
 
@@ -78,6 +79,8 @@ export default function parseOAO(data,scid){
                 OAO.s = vars.s
                 OAO.board = []
                 OAO.balances = balances
+                OAO.code = code
+                OAO.hash = vars.HASH
 
                 let seatSearch = new RegExp(`SEAT_\\d(?!_OWNER)`);
 
