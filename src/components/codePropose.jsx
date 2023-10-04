@@ -3,7 +3,7 @@ import { Container, Button } from "react-bootstrap";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { SHA256 } from "crypto-js";
-import { usePropose } from "./usePropose";
+import { usePropose } from "../hooks/usePropose";
 
 export default function CodeProposal({ OAO, ceo, seat }) {
   const [textareaValue, setTextareaValue] = useState(OAO.code);

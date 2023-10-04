@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetSC } from "../useGetSC";
+import { useGetSC } from "../hooks/useGetSC";
 
 export default function Search() {
   //create form which will fetch contract data and create object in state

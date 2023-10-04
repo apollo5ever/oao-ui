@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef, useCallback } from "react";
-import { LoginContext } from "./LoginContext";
+import { LoginContext } from "../LoginContext";
 import DeroBridgeApi from "dero-rpc-bridge-api";
 import to from "await-to-js";
 

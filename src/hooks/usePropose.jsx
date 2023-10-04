@@ -1,4 +1,4 @@
-import { useSendTransaction } from "../useSendTransaction.jsx";
+import { useSendTransaction } from "./useSendTransaction.jsx";
 
 export function usePropose() {
   const [sendTransaction] = useSendTransaction();

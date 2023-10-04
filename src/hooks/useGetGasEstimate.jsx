@@ -1,6 +1,6 @@
 import to from "await-to-js";
 import { useContext } from "react";
-import { LoginContext } from "./LoginContext";
+import { LoginContext } from "../LoginContext";
 
 export function useGetGasEstimate() {
   const [state, setState] = useContext(LoginContext);
