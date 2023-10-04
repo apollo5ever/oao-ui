@@ -3,9 +3,9 @@ import { Container, Button } from "react-bootstrap";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { SHA256 } from "crypto-js";
-import { usePropose } from "./usePropose";
-import { useSendTransaction } from "../useSendTransaction";
-import { useGetGasEstimate } from "../useGetGasEstimate";
+import { usePropose } from "../hooks/usePropose";
+import { useSendTransaction } from "../hooks/useSendTransaction";
+import { useGetGasEstimate } from "../hooks/useGetGasEstimate";
 
 export default function Update({ OAO, proposedHash }) {
   const [textareaValue, setTextareaValue] = useState("");

@@ -1,6 +1,6 @@
 import React from "react";
 import hex2a from "../hex2a";
-import { useSendTransaction } from "../useSendTransaction";
+import { useSendTransaction } from "../hooks/useSendTransaction";
 import Treasury from "./treasury";
 
 export default function OAO({ OAO, ceo, seat }) {

@@ -4,7 +4,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Treasury from "./treasury";
 import Update from "./codePropose";
-import { useSendTransaction } from "../useSendTransaction";
+import { useSendTransaction } from "../hooks/useSendTransaction";
 import "../App.css";
 import Proposals from "./proposals";
 import Code from "./code";
