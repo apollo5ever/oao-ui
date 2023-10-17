@@ -4,7 +4,7 @@ The Update Function allows the contract to be updated with Board-approved code
 Written by Apollo
 
 */
-Function Propose(hash String, k String, u Uint64, s String, t Uint64, seat Uint64) Uint64
+Function Propose(hash String, k String, v String, t Uint64, seat Uint64) Uint64
 10 IF ASSETVALUE(HEXDECODE(LOAD("CEO"))) != 1 THEN GOTO 13
 11 SEND_ASSET_TO_ADDRESS(SIGNER(),1,HEXDECODE(LOAD("CEO")))
 12 GOTO 15
@@ -18,11 +18,8 @@ Function Propose(hash String, k String, u Uint64, s String, t Uint64, seat Uint6
 40 STORE("k",k)
 45 STORE("HASH","")
 49 STORE("t",t)
-50 IF t == 1 THEN GOTO 80
-60 STORE("s", s)
+50 STORE("v", v)
 70 RETURN 0
-80 STORE("u",u)
-90 RETURN 0
 100 RETURN 1
 End Function
 
@@ -57,10 +54,10 @@ Function Store() Uint64
 10 IF LOAD("APPROVE") < LOAD("QUORUM") THEN GOTO 100
 20 STORE("APPROVE",0)
 30 IF LOAD("t") == 1 THEN GOTO 60
-40 STORE(LOAD("k"), LOAD("s"))
+40 STORE(LOAD("k"), LOAD("v"))
 45 STORE("k","")
 50 RETURN 0
-60 STORE(LOAD("k"),LOAD("u"))
+60 STORE(LOAD("k"),ATOI(LOAD("v")))
 65 STORE("k","")
 99 RETURN 0
 100 RETURN 1

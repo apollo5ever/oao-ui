@@ -76,22 +76,37 @@ function App() {
     console.log(e.target.scid.value);
     let sc = await getSC(e.target.scid.value, true, true);
     console.log(sc);
+
     let OAO = parseOAO(sc, e.target.scid.value);
-    let ceo = await getBalance(OAO.ceo);
+
+    let ceoToken = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
+
+    let ceo = await getBalance(ceoToken);
+    console.log("balance ", ceoToken, ceo);
     let seat = -1;
     console.log(state);
-    for (var i = 0; i < OAO.board?.length; i++) {
-      console.log("seat balance: ", OAO.board[i]);
-      let bal = await getBalance(OAO.board[i].scid);
+    for (var i = 0; i < OAO.users?.length; i++) {
+      if (OAO.users[i].index) {
+        continue;
+      }
+      let bal = await getBalance(OAO.users[i].tokenName);
       if (bal) {
         console.log("balance for seat is ", bal);
-        seat = OAO.board[i];
+        seat = {
+          id: OAO.users[i].index,
+          scid: OAO.users[i].tokenName,
+          owner: OAO.users[i].addressName,
+        };
         break;
       }
 
-      if (address === OAO.board[i].owner) {
+      if (address === OAO.users[i].addressName) {
         console.log("owner match!");
-        seat = OAO.board[i];
+        seat = {
+          id: OAO.users[i].index,
+          scid: OAO.users[i].tokenName,
+          owner: OAO.users[i].addressName,
+        };
         break;
       }
     }
@@ -154,7 +169,7 @@ function App() {
 
       {state.OAO.version == "OAO" ? (
         <OAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
-      ) : state.OAO.version == "mOAO" ? (
+      ) : state.OAO.version == "BNB" ? (
         <MOAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
       ) : (
         ""

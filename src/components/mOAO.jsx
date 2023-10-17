@@ -82,7 +82,7 @@ export default function MOAO({ OAO, ceo, seat }) {
 
     let asset = "";
     if (ceo) {
-      asset = OAO.ceo;
+      asset = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
     } else {
       asset = seat.scid;
     }
@@ -132,6 +132,8 @@ export default function MOAO({ OAO, ceo, seat }) {
 
   return (
     <>
+      {ceo ? <>Welcome Mr. CEO</> : ""}
+      {seat.id ? <>Hello Board Member {seat.id}</> : ""}
       <Tabs
         id="controlled-tab-example"
         activeKey={activeTab}

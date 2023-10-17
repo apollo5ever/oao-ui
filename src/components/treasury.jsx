@@ -8,17 +8,33 @@ export default function Treasury({ OAO }) {
       <Table striped bordered>
         <thead>
           <tr>
-            <th>ASSET</th>
-            <th>ALLOWANCE</th>
-            <th>AMOUNT</th>
+            <th>ASSET NAME</th>
+            <th>ASSET SCID</th>
+            <th>TREASURY</th>
+            <th>ALLOWANCES</th>
           </tr>
         </thead>
         <tbody>
-          {Object.keys(OAO.treasury).map((key) => (
-            <tr key={key}>
-              <td>{key}</td>
-              <td>{OAO.treasury[key].ALLOWANCE}</td>
-              <td>{OAO.treasury[key].AMOUNT}</td>
+          {OAO.treasury.assets.map((asset) => (
+            <tr key={asset.scid}>
+              <td>{asset.name}</td>
+              <td>{asset.scid}</td>
+              <td>{asset.treasury}</td>
+              <td>
+                {asset.allowances.length > 0 ? (
+                  <ul>
+                    {assetasset.allowances.map((allowance, index) => (
+                      <li key={index}>
+                        Type:{" "}
+                        {allowance.interval ? allowance.interval : "One-Time"},
+                        Amount: {allowance.amount}, Role: {allowance.role}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  "No Active Allowances"
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
