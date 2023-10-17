@@ -65,9 +65,9 @@ export function useRPCWallet() {
     }
   });
 
-  useEffect(() => {
+  /*  useEffect(() => {
     fetchWalletInfo(); //i feel like this shouldn't be here
-  }, []);
+  }, []); */
 
   return [walletInfo, isLoading, error, fetchWalletInfo, getAddress];
 }

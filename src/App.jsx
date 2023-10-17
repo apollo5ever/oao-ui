@@ -19,6 +19,7 @@ import WebSocketService from "./webSocketService";
 import WalletToggle from "./components/rpcToggle";
 import DaemonToggle from "./components/daemonToggle";
 import { useGetAddress } from "./hooks/useGetAddress";
+import { useInitializeWallet } from "./hooks/useInitializeWallet";
 import {
   Navbar,
   Nav,
@@ -36,6 +37,7 @@ function App() {
   const deroBridgeApiRef = useRef();
   const [socketService, setSocketService] = useState(null);
   const [getAddress] = useGetAddress();
+  const [initializeWallet] = useInitializeWallet();
   //const [walletInfo, isLoading, error, fetchWalletInfo] = useRPCWallet();
 
   //if user has loaded up contract using search component then state object will contain things like CEO, SEAT_1, QUORUM, APPROVAL
@@ -43,13 +45,17 @@ function App() {
   //if user has multiple roles, display role switcher to let user choose active role
 
   useEffect(() => {
+    initializeWallet();
+  }, []);
+
+  /*   useEffect(() => {
     const ws = new WebSocketService("ws://localhost:44326/xswd");
     setSocketService(ws);
     setState((state) => ({ ...state, ws: ws }));
     console.log("ws", ws);
-  }, []);
+  }, []); */
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const payload = {
       id: "ed606a2f4c4f499618a78ff5f7c8e51cd2ca4d8bfa7e2b41a27754bb78b1df1f",
       name: "OAO Dashboard",
@@ -62,7 +68,7 @@ function App() {
     } catch (error) {
       console.error("Error sending payload:", error);
     }
-  }, [state]);
+  }, [state]); */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,7 +80,7 @@ function App() {
     let ceo = await getBalance(OAO.ceo);
     let seat = -1;
     console.log(state);
-    for (var i = 0; i < OAO.board.length; i++) {
+    for (var i = 0; i < OAO.board?.length; i++) {
       console.log("seat balance: ", OAO.board[i]);
       let bal = await getBalance(OAO.board[i].scid);
       if (bal) {
@@ -92,7 +98,7 @@ function App() {
     setState((state) => ({ ...state, OAO: OAO, ceo: ceo, seat: seat }));
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const load = async () => {
       deroBridgeApiRef.current = new DeroBridgeApi();
       const deroBridgeApi = deroBridgeApiRef.current;
@@ -118,7 +124,7 @@ function App() {
 
     window.addEventListener("load", load);
     return () => window.removeEventListener("load", load);
-  }, []);
+  }, []); */
 
   return (
     <>

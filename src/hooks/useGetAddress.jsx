@@ -5,17 +5,20 @@ import to from "await-to-js";
 export function useGetAddress() {
   const [state, setState] = useContext(LoginContext);
 
-  const rpcGetAddress = React.useCallback(async () => {
-    const deroBridgeApi = state.deroBridgeApiRef.current;
+  const rpcGetAddress = React.useCallback(async (deroBridgeApiRef) => {
+    const deroBridgeApi = deroBridgeApiRef.current;
 
     const [err, res] = await to(deroBridgeApi.wallet("get-address", {}));
     console.log("rpc get address", res.data.result.address);
     return res.data.result.address;
   });
 
-  async function getAddress() {
+  async function getAddress(deroBridgeApiRef) {
     if (state.walletMode == "rpc") {
-      return await rpcGetAddress();
+      if (!deroBridgeApiRef) {
+        deroBridgeApiRef = state.deroBridgeApiRef;
+      }
+      return await rpcGetAddress(deroBridgeApiRef);
     } else if (state.walletMode == "xswd") {
       return new Promise((resolve, reject) => {
         const payload = {

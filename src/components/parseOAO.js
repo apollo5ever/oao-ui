@@ -1,7 +1,10 @@
 import hex2a from '../hex2a.js';
+import {getOAOContractByVersion}  from '../typescript/OAO.ts'
 
 export default function parseOAO(data,scid){
     // check for version var
+    const OAOContract = getOAOContractByVersion("1.0")
+    console.log(OAOContract.treasury.treasurySearch)
     console.log("data",data)
     let vars = data.stringkeys
     let version = hex2a(vars.OAO_VERSION)
