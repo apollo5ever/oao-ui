@@ -7,6 +7,7 @@ export function useGetGasEstimate() {
 
   async function getGasEstimate(data) {
     if (state.daemonMode == "pools") {
+      console.log("data data", data);
       let poolData = JSON.stringify({
         jsonrpc: "2.0",
         id: "1",

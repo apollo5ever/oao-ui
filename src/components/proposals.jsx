@@ -9,6 +9,7 @@ import hex2a from "../hex2a";
 import HashChecker from "./hashChecker";
 import CodeProposal from "./codePropose";
 import Update from "./update";
+import Approve from "./approve";
 
 export default function Proposals({ OAO, ceo, seat }) {
   const [key, setKey] = useState("");
@@ -37,7 +38,7 @@ export default function Proposals({ OAO, ceo, seat }) {
     console.log("CEO", ceo);
     let asset;
     if (ceo) {
-      asset = OAO.ceo;
+      asset = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
     } else {
       asset = seat.scid;
     }
@@ -67,7 +68,7 @@ export default function Proposals({ OAO, ceo, seat }) {
               <p>Proposal to Update Contract. Hash: {OAO.proposal.hash}</p>
 
               <button onClick={() => setCheckHash(!checkHash)}>
-                {checkHash ? "x" : "Check hash"}
+                {checkHash ? "x" : "Open Hash Checker"}
               </button>
               {checkHash ? (
                 <HashChecker OAO={OAO} proposedHash={OAO.proposal.hash} />
@@ -77,9 +78,10 @@ export default function Proposals({ OAO, ceo, seat }) {
             </>
           )}
           <p>
-            Votes: {OAO.approve}/{OAO.quorum}
+            Votes: {OAO.proposal.approval}/{OAO.proposal.quorum}
           </p>
-          {OAO.k && OAO.approve >= OAO.quorum ? (
+          {OAO.proposal.type == "Store" &&
+          OAO.proposal.approve >= OAO.proposal.quorum ? (
             <button onClick={store}>Store Value</button>
           ) : OAO.proposal.hash &&
             OAO.proposal.approval >= OAO.proposal.quorum &&
@@ -93,7 +95,16 @@ export default function Proposals({ OAO, ceo, seat }) {
           ) : (
             ""
           )}
-          {seat.id >= 0 ? <button onClick={vote}>Vote</button> : ""}
+          {seat.id >= 0 ? (
+            <Approve
+              index={seat.id}
+              voteFunction={OAO.voteFunction}
+              asset={seat.scid}
+              scid={OAO.scid}
+            />
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         ""
