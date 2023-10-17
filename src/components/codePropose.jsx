@@ -46,7 +46,7 @@ export default function CodeProposal({ OAO, ceo, seat }) {
     console.log("Textarea hash:", myHash);
     let asset;
     if (ceo) {
-      asset = OAO.ceo;
+      asset = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
     } else {
       asset = seat.scid;
     }

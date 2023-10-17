@@ -52,6 +52,8 @@ for(let role of OAO.roles){
 OAO.proposal.key = hex2a(vars[OAO.proposal.keySearch])
 OAO.proposal.value = hex2a(vars[OAO.proposal.valueSearch])
 OAO.proposal.hash = hex2a(vars[OAO.proposal.hashSearch])
+OAO.proposal.quorum = vars[OAO.proposal.quorumSearch]
+OAO.proposal.approval = vars[OAO.proposal.approvalSearch]
 if(OAO.proposal.key){
     OAO.proposal.type = "Store"
 }else if(OAO.proposal.hash){

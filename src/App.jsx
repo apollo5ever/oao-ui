@@ -86,17 +86,18 @@ function App() {
     let seat = -1;
     console.log(state);
     for (var i = 0; i < OAO.users?.length; i++) {
-      if (OAO.users[i].index) {
+      /* if (OAO.users[i].index) {
         continue;
-      }
+      } */
       let bal = await getBalance(OAO.users[i].tokenName);
       if (bal) {
         console.log("balance for seat is ", bal);
         seat = {
-          id: OAO.users[i].index,
+          id: parseInt(OAO.users[i].index),
           scid: OAO.users[i].tokenName,
           owner: OAO.users[i].addressName,
         };
+        console.log(seat);
         break;
       }
 
