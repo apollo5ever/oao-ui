@@ -1,6 +1,8 @@
 interface OAOContract {
     version: string;
+    scid?: string;
     name: string;
+    proposal?: Proposal;
     treasury: Treasury;
     roles: Role[];
     users: Role[];
@@ -10,6 +12,7 @@ interface OAOContract {
     storeFunction: Operation;
     voteFunction: Operation;
     withdrawFunction: Operation;
+    code?: string;
     
   }
   
@@ -17,6 +20,7 @@ interface OAOContract {
     tokenName: string | RegExp;
     type: RoleType;
     addressName: string | RegExp;
+    index?: number;
   }
 
   interface Treasury {
@@ -28,6 +32,8 @@ interface OAOContract {
   }
 
   interface Asset {
+    name?:    string;
+    scid:     string;
     treasury: number;
     allowances: Allowance[];
   }
@@ -39,16 +45,28 @@ interface OAOContract {
 
   }
 
-  interface TreasuryAsset{
-    amount: number;
-    allowance: number;
-
+  interface Proposal {
+    type?: ProposalType;
+    hash?: string;
+    key?: string;
+    value?: string | number;
+    datatype?: DataType;
+    approval?: number;
+    quorum?: number;
+    hashSearch: string;
+    keySearch: string;
+    valueSearch: string;
+    datatypeSearch: string;
+    approvalSearch: string;
+    quorumSearch: string;
   }
+
+ 
 
 
   interface Param {
     name: String;
-    datatype: String
+    datatype: DataType
   }
 
   interface Operation {
@@ -58,16 +76,19 @@ interface OAOContract {
   }
   
   type RoleType = "CEO" | "Trustee" ;
+  type ProposalType = "Update" | "Store"
+  type DataType = "U" | "S"
   
   export function getOAOContractByVersion(version: string): OAOContract | null {
     switch (version) {
-      case "1.0":
+      case "BNB":
         return {
-          version: "1.0",
+          version: "BNB",
           name: "Name",
+          proposal:{hashSearch:"HASH",keySearch:"k",valueSearch:"v",datatypeSearch:"t",approvalSearch:"APPROVE",quorumSearch:"QUORUM"},
           roles: [
-            { tokenName: "CEO", type: "CEO", addressName: /^CEO\d+$Owner/ },
-            { tokenName: /^SEAT_\d+$/, type: "Trustee" , addressName: /^SEAT_\d+$_OWNER/}
+            { tokenName: /CEO/, type: "CEO", addressName: /CEO\d+Owner/ },
+            { tokenName: /SEAT_\d+$/, type: "Trustee" , addressName: /SEAT_\d+_OWNER/}
           ],
           treasury:{treasurySearch:/treasury/,allowanceSearch:/allowance/,assets:[]},
           users:[],

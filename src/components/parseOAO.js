@@ -3,8 +3,63 @@ import {getOAOContractByVersion}  from '../typescript/OAO.ts'
 
 export default function parseOAO(data,scid){
     // check for version var
-    const OAOContract = getOAOContractByVersion("1.0")
-    console.log(OAOContract.treasury.treasurySearch)
+    let vars = data.stringkeys
+    const OAO = getOAOContractByVersion("BNB")
+    OAO.scid = scid
+    OAO.name = "DerBNB"
+    OAO.code = data.code
+
+
+    for(var key of Object.keys(vars)){
+        if(OAO.treasury.treasurySearch.test(key)){
+            let asset = key.substring(8);
+           console.log(asset,OAO.treasury.allowanceSearch.toString())
+            let allowance = vars[`${OAO.treasury.allowanceSearch.toString().slice(1,-1)+asset}`]
+            let allowances = []
+            if(allowance){
+                allowances.push({amount:allowance,role:"CEO"})
+            }
+            OAO.treasury.assets.push({
+                name: asset,
+                scid:"0000000000000000000000000000000000000000000000000000000000000000",
+                treasury:vars[key],
+                allowances:allowances
+            })
+          /*   let asset = key.substring(9); // remove "TREASURY_" prefix
+               let scid = vars[`SCID_${asset}`] || "0000000000000000000000000000000000000000000000000000000000000000";
+                let amount = vars[`TREASURY_${asset}`] || 0;
+                
+        let allowance = vars[`ALLOWANCE_${asset}`] || 0;
+           treasury[asset] = {SCID: scid, AMOUNT: amount, ALLOWANCE: allowance}; */
+}
+for(let role of OAO.roles){
+    
+    if(role.tokenName.test(key)){
+        let index = key.substring(key.length-1,)
+        console.log("index",index)
+        const addressSearch = role.addressName.source.replace(/\\d\+/, index) + ""
+        console.log("addressSearch",addressSearch)
+        console.log("index",index)
+        let user = {type:role.type,tokenName:hex2a(vars[key]),addressName:hex2a(vars[addressSearch]),index:index}
+   OAO.users.push(user)
+}
+}
+
+
+
+}
+
+OAO.proposal.key = hex2a(vars[OAO.proposal.keySearch])
+OAO.proposal.value = hex2a(vars[OAO.proposal.valueSearch])
+OAO.proposal.hash = hex2a(vars[OAO.proposal.hashSearch])
+if(OAO.proposal.key){
+    OAO.proposal.type = "Store"
+}else if(OAO.proposal.hash){
+    OAO.proposal.type = "Update"
+}
+    
+
+  /*   console.log(OAOContract.treasury.treasurySearch)
     console.log("data",data)
     let vars = data.stringkeys
     let version = hex2a(vars.OAO_VERSION)
@@ -122,7 +177,7 @@ export default function parseOAO(data,scid){
     }
     
     
-    return OAO;
-
-    
+    return OAO; */
+    console.log("OAO",OAO)
+    return OAO
 }

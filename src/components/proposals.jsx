@@ -49,7 +49,7 @@ export default function Proposals({ OAO, ceo, seat }) {
   return (
     <Container>
       <h3>Proposals</h3>
-      {OAO.k || (OAO.hash && hex2a(OAO.hash) != SHA256(OAO.code).toString()) ? (
+      {OAO.proposal.type && OAO.proposal.hash != SHA256(OAO.code).toString() ? (
         <div
           style={{
             border: "1px solid #ccc",
@@ -58,23 +58,19 @@ export default function Proposals({ OAO, ceo, seat }) {
           }}
         >
           <h4 style={{ marginBottom: "10px" }}>Active Proposal</h4>
-          {OAO.k && OAO.t == 0 ? (
+          {OAO.proposal.key ? (
             <p>
-              Proposal to STORE("{hex2a(OAO.k)}","{hex2a(OAO.s)}")
-            </p>
-          ) : OAO.k && OAO.t == 1 ? (
-            <p>
-              Proposal to STORE("{hex2a(OAO.k)}",{OAO.u})
+              Proposal to STORE("{OAO.proposal.key}","{OAO.proposal.value}")
             </p>
           ) : (
             <>
-              <p>Proposal to Update Contract. Hash: {hex2a(OAO.hash)}</p>
+              <p>Proposal to Update Contract. Hash: {OAO.proposal.hash}</p>
 
               <button onClick={() => setCheckHash(!checkHash)}>
                 {checkHash ? "x" : "Check hash"}
               </button>
               {checkHash ? (
-                <HashChecker OAO={OAO} proposedHash={hex2a(OAO.hash)} />
+                <HashChecker OAO={OAO} proposedHash={OAO.proposal.hash} />
               ) : (
                 ""
               )}
@@ -85,12 +81,14 @@ export default function Proposals({ OAO, ceo, seat }) {
           </p>
           {OAO.k && OAO.approve >= OAO.quorum ? (
             <button onClick={store}>Store Value</button>
-          ) : OAO.hash && OAO.approve >= OAO.quorum && OAO.ceo ? (
+          ) : OAO.proposal.hash &&
+            OAO.proposal.approval >= OAO.proposal.quorum &&
+            OAO.ceo ? (
             <Update
               OAO={OAO}
               ceo={ceo}
               seat={seat}
-              proposedHash={hex2a(OAO.hash)}
+              proposedHash={OAO.proposal.hash}
             />
           ) : (
             ""
