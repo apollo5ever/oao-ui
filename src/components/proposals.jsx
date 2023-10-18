@@ -61,7 +61,10 @@ export default function Proposals({ OAO, ceo, seat }) {
           <h4 style={{ marginBottom: "10px" }}>Active Proposal</h4>
           {OAO.proposal.key ? (
             <p>
-              Proposal to STORE("{OAO.proposal.key}","{OAO.proposal.value}")
+              Proposal to STORE("{OAO.proposal.key}",
+              {OAO.proposal.datatype == "S" ? <>"</> : ""}
+              {OAO.proposal.value}
+              {OAO.proposal.datatype == "S" ? <>"</> : ""})
             </p>
           ) : (
             <>
@@ -81,7 +84,7 @@ export default function Proposals({ OAO, ceo, seat }) {
             Votes: {OAO.proposal.approval}/{OAO.proposal.quorum}
           </p>
           {OAO.proposal.type == "Store" &&
-          OAO.proposal.approve >= OAO.proposal.quorum ? (
+          OAO.proposal.approval >= OAO.proposal.quorum ? (
             <button onClick={store}>Store Value</button>
           ) : OAO.proposal.hash &&
             OAO.proposal.approval >= OAO.proposal.quorum &&

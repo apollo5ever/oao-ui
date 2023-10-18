@@ -35,7 +35,7 @@ const SaveOAO = () => {
       <label>
         Load:
         <select onChange={(e) => handleLoad(e.target.value)}>
-          <option value="">Select an SCID</option>
+          <option value="">Select OAO</option>
           {savedData.map((data, index) => (
             <option key={index} value={data.scid}>
               {data.name}

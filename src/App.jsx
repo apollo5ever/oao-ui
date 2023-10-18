@@ -86,6 +86,7 @@ function App() {
     console.log(sc); */
 
     let OAO = await parseOAO(e.target.scid.value);
+    setState((state) => ({ ...state, OAO: OAO }));
     try {
       let ceoToken = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
 
@@ -119,10 +120,9 @@ function App() {
           break;
         }
       }
-      setState((state) => ({ ...state, OAO: OAO, ceo: ceo, seat: seat }));
+      setState((state) => ({ ...state, ceo: ceo, seat: seat }));
     } catch (error) {
       console.log(error);
-      setState((state) => ({ ...state, OAO: OAO }));
     }
   };
 
@@ -180,13 +180,8 @@ function App() {
           <DaemonToggle />
         </div>
       </Navbar>
-
-      {state.OAO.version == "OAO" ? (
-        <OAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
-      ) : state.OAO.version == "BNB" ? (
+      {state.OAO.version && (
         <MOAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
-      ) : (
-        ""
       )}
     </>
   );

@@ -51,11 +51,15 @@ interface OAOContract {
     key?: string;
     value?: string | number;
     datatype?: DataType;
+    string?: string;
+    uint?: number;
     approval?: number;
     quorum?: number;
     hashSearch: string;
     keySearch: string;
-    valueSearch: string;
+    valueSearch?: string;
+    stringSearch?: string;
+    uintSearch?: string;
     datatypeSearch: string;
     approvalSearch: string;
     quorumSearch: string;
@@ -82,8 +86,8 @@ interface OAOContract {
       case "BNB":
         return {
           version: "BNB",
-          name: "Name",
-          proposal:{hashSearch:"HASH",keySearch:"k",valueSearch:"v",datatypeSearch:"t",approvalSearch:"APPROVE",quorumSearch:"QUORUM"},
+          name: "OAO_NAME",
+          proposal:{hashSearch:"HASH",keySearch:"k",stringSearch:"s", uintSearch: "u",datatypeSearch:"t",approvalSearch:"APPROVE",quorumSearch:"QUORUM"},
           roles: [
             { tokenName: /CEO/, type: "CEO", addressName: /CEO\d+Owner/ },
             { tokenName: /SEAT_\d+$/, type: "Trustee" , addressName: /SEAT_\d+_OWNER/}
@@ -98,6 +102,26 @@ interface OAOContract {
           withdrawFunction: {name:"Withdraw", params:[{name:"amount",datatype:"U",label:"Amount"},{name:"token",datatype:"S",label:"Token"}],access:["CEO"]}
           
         };
+
+        case "PI":
+          return {
+            version: "PI",
+            name: "OAO_NAME",
+            proposal:{hashSearch:"HASH",keySearch:"k",stringSearch:"s",uintSearch:"u",datatypeSearch:"t",approvalSearch:"APPROVE",quorumSearch:"QUORUM"},
+            roles: [
+              { tokenName: /CEO/, type: "CEO", addressName: /CEO\d+Owner/ },
+              { tokenName: /SEAT_\d+$/, type: "Trustee" , addressName: /SEAT_\d+_OWNER/}
+            ],
+            treasury:{treasurySearch:/TREASURY_/,allowanceSearch:/ALLOWANCE_/,assets:[]},
+            users:[],
+            mutable: true,
+            updateFunction: {name:"Update",params:[{name:"code",datatype:"S",label:"code"}],access:["CEO"]},
+            proposeFunction: {name:"Propose",params:[{name:"hash",datatype:"S",label:"hash"},{name:"k",datatype:"S",label:"key"},{name:"u",datatype:"U",label:"Uint64 Value"},{name:"s",datatype:"S",label:"String Value"},{name:"t",datatype:"U",label:"datatype"},{name:"seat",datatype:"U",label:"seat"}],access:["CEO","Trustee"]},
+            storeFunction: {name:"Store", params:[],access:["CEO","Trustee"]},
+            voteFunction: {name:"Approve",params:[{name:"seat",datatype:"U",label:"seat"}],access:["Trustee"]},
+            withdrawFunction: {name:"Withdraw", params:[{name:"amount",datatype:"U",label:"Amount"},{name:"token",datatype:"S",label:"Token"}],access:["CEO"]}
+            
+          }; 
       // Add cases for other versions as needed
       default:
         return null; // Return null if version is not recognized
