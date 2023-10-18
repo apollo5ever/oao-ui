@@ -8,7 +8,7 @@
 
 ### Add Contracts to Repo (apollo)
 
-### Create Navbar (quest)
+### Create Navbar (quest) //work in progress
 
 ### Create Search bar in Navbar (quest)
 
