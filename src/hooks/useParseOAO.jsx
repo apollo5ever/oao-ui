@@ -67,11 +67,22 @@ export function useParseOAO() {
 
     OAO.proposal.key = hex2a(vars[OAO.proposal.keySearch]);
     OAO.proposal.value = hex2a(vars[OAO.proposal.valueSearch]);
+    OAO.proposal.string = hex2a(vars[OAO.proposal.stringSearch]);
+    OAO.proposal.uint = hex2a(vars[OAO.proposal.uintSearch]);
     OAO.proposal.hash = hex2a(vars[OAO.proposal.hashSearch]);
     OAO.proposal.quorum = vars[OAO.proposal.quorumSearch];
     OAO.proposal.approval = vars[OAO.proposal.approvalSearch];
     if (OAO.proposal.key) {
       OAO.proposal.type = "Store";
+      if (OAO.proposal.value) {
+        OAO.proposal.datatype = hex2a(vars[OAO.proposal.datatypeSearch]);
+      } else if (OAO.proposal.string) {
+        OAO.proposal.datatype = "S";
+        OAO.proposal.value = OAO.proposal.string;
+      } else {
+        OAO.proposal.datatype = "U";
+        OAO.proposal.value = OAO.proposal.uint;
+      }
     } else if (OAO.proposal.hash) {
       OAO.proposal.type = "Update";
     }

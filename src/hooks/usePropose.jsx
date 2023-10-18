@@ -7,8 +7,26 @@ export function usePropose() {
   const [getGasEstimate] = useGetGasEstimate();
   const [getAddress] = useGetAddress();
 
-  const propose = async (scid, hash, k, v, t, asset, id, signer) => {
+  const propose = async (scid, hash, k, v, t, asset, id, proposeFunction) => {
     let address = await getAddress();
+    /*  let sc_rpc = [
+      {
+      name:"entrypoint",
+      value:proposeFunction.name,
+      datatype:"S",
+  }].concat(proposeFunction.params)
+  let gas_rpc = [
+    {
+      name: "SC_ACTION",
+      datatype: "U",
+      value: 0,
+    },
+    {
+      name: "SC_ID",
+      datatype: "H",
+      value:scid,
+    }
+  ].concat(sc_rpc) */
     let fees = await getGasEstimate({
       scid: scid,
       ringsize: 2,
