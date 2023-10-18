@@ -132,6 +132,7 @@ export default function MOAO({ OAO, ceo, seat }) {
 
   return (
     <>
+      <h1>{OAO.name}</h1>
       {ceo ? <>Welcome Mr. CEO</> : ""}
       {seat.id ? <>Hello Board Member {seat.id}</> : ""}
       <Tabs
