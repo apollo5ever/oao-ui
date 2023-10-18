@@ -5,7 +5,7 @@ import "./App.css";
 import CEO from "./components/ceo";
 import Search from "./components/search";
 import { useGetSC } from "./hooks/useGetSC";
-import parseOAO from "./components/parseOAO";
+import { useParseOAO } from "./hooks/useParseOAO";
 import { useRPCWallet } from "./hooks/useRPCWallet";
 import { LoginContext } from "./LoginContext";
 import DeroBridgeApi from "dero-rpc-bridge-api";
@@ -28,6 +28,7 @@ import {
   Button,
   InputGroup,
 } from "react-bootstrap";
+import SaveOAO from "./components/saveOAO";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -37,6 +38,7 @@ function App() {
   const deroBridgeApiRef = useRef();
   const [socketService, setSocketService] = useState(null);
   const [getAddress] = useGetAddress();
+  const [parseOAO] = useParseOAO();
   const [initializeWallet] = useInitializeWallet();
   //const [walletInfo, isLoading, error, fetchWalletInfo] = useRPCWallet();
 
@@ -72,46 +74,56 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let address = await getAddress();
+
+    try {
+      let address = await getAddress();
+    } catch (error) {
+      console.log(error);
+    }
+
     console.log(e.target.scid.value);
-    let sc = await getSC(e.target.scid.value, true, true);
-    console.log(sc);
+    /*  let sc = await getSC(e.target.scid.value, true, true);
+    console.log(sc); */
 
-    let OAO = parseOAO(sc, e.target.scid.value);
+    let OAO = await parseOAO(e.target.scid.value);
+    try {
+      let ceoToken = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
 
-    let ceoToken = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
-
-    let ceo = await getBalance(ceoToken);
-    console.log("balance ", ceoToken, ceo);
-    let seat = -1;
-    console.log(state);
-    for (var i = 0; i < OAO.users?.length; i++) {
-      /* if (OAO.users[i].index) {
+      let ceo = await getBalance(ceoToken);
+      console.log("balance ", ceoToken, ceo);
+      let seat = -1;
+      console.log(state);
+      for (var i = 0; i < OAO.users?.length; i++) {
+        /* if (OAO.users[i].index) {
         continue;
       } */
-      let bal = await getBalance(OAO.users[i].tokenName);
-      if (bal) {
-        console.log("balance for seat is ", bal);
-        seat = {
-          id: parseInt(OAO.users[i].index),
-          scid: OAO.users[i].tokenName,
-          owner: OAO.users[i].addressName,
-        };
-        console.log(seat);
-        break;
-      }
+        let bal = await getBalance(OAO.users[i].tokenName);
+        if (bal) {
+          console.log("balance for seat is ", bal);
+          seat = {
+            id: parseInt(OAO.users[i].index),
+            scid: OAO.users[i].tokenName,
+            owner: OAO.users[i].addressName,
+          };
+          console.log(seat);
+          break;
+        }
 
-      if (address === OAO.users[i].addressName) {
-        console.log("owner match!");
-        seat = {
-          id: OAO.users[i].index,
-          scid: OAO.users[i].tokenName,
-          owner: OAO.users[i].addressName,
-        };
-        break;
+        if (address === OAO.users[i].addressName) {
+          console.log("owner match!");
+          seat = {
+            id: OAO.users[i].index,
+            scid: OAO.users[i].tokenName,
+            owner: OAO.users[i].addressName,
+          };
+          break;
+        }
       }
+      setState((state) => ({ ...state, OAO: OAO, ceo: ceo, seat: seat }));
+    } catch (error) {
+      console.log(error);
+      setState((state) => ({ ...state, OAO: OAO }));
     }
-    setState((state) => ({ ...state, OAO: OAO, ceo: ceo, seat: seat }));
   };
 
   /*   useEffect(() => {
@@ -161,6 +173,7 @@ function App() {
               </Button>
             </InputGroup>
           </Form>
+          <SaveOAO />
         </Navbar.Collapse>
         <div className="d-flex flex-column">
           <WalletToggle />

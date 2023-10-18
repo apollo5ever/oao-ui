@@ -61,12 +61,10 @@ interface OAOContract {
     quorumSearch: string;
   }
 
- 
-
-
   interface Param {
     name: String;
-    datatype: DataType
+    datatype: DataType;
+    label:    String;
   }
 
   interface Operation {
@@ -93,11 +91,11 @@ interface OAOContract {
           treasury:{treasurySearch:/treasury/,allowanceSearch:/allowance/,assets:[]},
           users:[],
           mutable: true,
-          updateFunction: {name:"Update",params:[{name:"code",datatype:"S"}],access:["CEO"]},
-          proposeFunction: {name:"Propose",params:[{name:"hash",datatype:"S"},{name:"k",datatype:"S"},{name:"u",datatype:"U"},{name:"s",datatype:"S"},{name:"t",datatype:"U"},{name:"seat",datatype:"U"}],access:["CEO","Trustee"]},
+          updateFunction: {name:"Update",params:[{name:"code",datatype:"S",label:"code"}],access:["CEO"]},
+          proposeFunction: {name:"Propose",params:[{name:"hash",datatype:"S",label:"hash"},{name:"k",datatype:"S",label:"key"},{name:"u",datatype:"U",label:"Uint64 Value"},{name:"s",datatype:"S",label:"String Value"},{name:"t",datatype:"U",label:"datatype"},{name:"seat",datatype:"U",label:"seat"}],access:["CEO","Trustee"]},
           storeFunction: {name:"Store", params:[],access:["CEO","Trustee"]},
-          voteFunction: {name:"Approve",params:[{name:"seat",datatype:"U"}],access:["Trustee"]},
-          withdrawFunction: {name:"Withdraw", params:[{name:"amount",datatype:"U"},{name:"token",datatype:"S"}],access:["CEO"]}
+          voteFunction: {name:"Approve",params:[{name:"seat",datatype:"U",label:"seat"}],access:["Trustee"]},
+          withdrawFunction: {name:"Withdraw", params:[{name:"amount",datatype:"U",label:"Amount"},{name:"token",datatype:"S",label:"Token"}],access:["CEO"]}
           
         };
       // Add cases for other versions as needed

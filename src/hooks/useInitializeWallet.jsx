@@ -75,7 +75,11 @@ export function useInitializeWallet() {
 
   async function initializeWallet() {
     if (state.walletMode == "rpc") {
-      initRPC();
+      try {
+        initRPC();
+      } catch (error) {
+        console.log(error);
+      }
     } else if (state.walletMode == "xswd") {
       initXSWD();
     }

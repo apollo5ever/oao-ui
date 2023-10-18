@@ -3,6 +3,7 @@ Function Initialize() Uint64
 2 SEND_ASSET_TO_ADDRESS(SIGNER(),1,SCID())
 3 STORE("QUORUM",0)
 4 STORE("APPROVE",0)
+5 STORE("OAO_NAME","evil OAO")
 9 RETURN 0
 End Function
 
