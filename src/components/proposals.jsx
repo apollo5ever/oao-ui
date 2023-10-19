@@ -44,7 +44,17 @@ export default function Proposals({ OAO, ceo, seat }) {
     }
     let id = seat.id;
 
-    propose(OAO.scid, hash, key, value, datatype, asset, id);
+    propose(
+      OAO.scid,
+      hash,
+      key,
+      value,
+      datatype,
+      asset,
+      id,
+      OAO.proposeFunction,
+      OAO.version
+    );
   };
 
   return (
