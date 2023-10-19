@@ -3,8 +3,14 @@ import { Container, Button } from "react-bootstrap";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { SHA256 } from "crypto-js";
+import { useGetAddress } from "../hooks/useGetAddress";
+import { useGetGasEstimate } from "../hooks/useGetGasEstimate";
+import { useSendTransaction } from "../hooks/useSendTransaction";
 
 export default function HashChecker({ OAO, proposedHash }) {
+  const [getAddress] = useGetAddress();
+  const [getGasEstimate] = useGetGasEstimate();
+  const [sendTransaction] = useSendTransaction();
   const [textareaValue, setTextareaValue] = useState("");
   const textareaRef = useRef(null);
   const [myHash, setMyHash] = useState("");
@@ -40,10 +46,64 @@ export default function HashChecker({ OAO, proposedHash }) {
     }
   };
 
-  const handleSubmit = () => {
-    const hash = SHA256(textareaValue).toString();
-    console.log("Textarea hash:", hash);
-    setMyHash(hash);
+  const handleSubmit = async () => {
+    let address = await getAddress();
+    let ceo = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
+    const data = {
+      signer: address,
+      scid: OAO.scid,
+      ringsize: 2,
+      transfers: [
+        {
+          scid: ceo,
+          burn: 1,
+        },
+      ],
+      gas_rpc: [
+        {
+          name: "SC_ACTION",
+          datatype: "U",
+          value: 0,
+        },
+        {
+          name: "SC_ID",
+          datatype: "H",
+          value: OAO.scid,
+        },
+        {
+          name: "entrypoint",
+          datatype: "S",
+          value: "Update",
+        },
+        {
+          name: "code",
+          datatype: "S",
+          value: textareaValue,
+        },
+      ],
+      sc_rpc: [
+        {
+          name: "entrypoint",
+          datatype: "S",
+          value: "Update",
+        },
+        {
+          name: "code",
+          datatype: "S",
+          value: textareaValue,
+        },
+      ],
+      sc: "",
+    };
+
+    let fee = await getGasEstimate(data);
+    if (fee > 0) {
+      data.fees = fee;
+      sendTransaction(data);
+    } else {
+      console.log(fee);
+    }
+
     //setActiveTab("proposals");
   };
 
@@ -80,7 +140,16 @@ export default function HashChecker({ OAO, proposedHash }) {
 
       <p>Hash of code entered above: {myHash}</p>
       {proposedHash == myHash ? (
-        <p>This code matches with the proposal.</p>
+        <p>
+          This code matches with the proposal.
+          <Button
+            onClick={() => {
+              handleSubmit();
+            }}
+          >
+            Update
+          </Button>
+        </p>
       ) : (
         <p>This code does not match with the proposal.</p>
       )}
