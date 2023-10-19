@@ -66,9 +66,10 @@ interface OAOContract {
   }
 
   interface Param {
-    name: String;
+    name: string;
     datatype: DataType;
-    label:    String;
+    label:    string;
+    value?:   string | number;
   }
 
   interface Operation {
@@ -107,7 +108,7 @@ interface OAOContract {
           return {
             version: "PI",
             name: "OAO_NAME",
-            proposal:{hashSearch:"HASH",keySearch:"k",stringSearch:"s",uintSearch:"u",datatypeSearch:"t",approvalSearch:"APPROVE",quorumSearch:"QUORUM"},
+            proposal:{hashSearch:"HASH",keySearch:"k",valueSearch:"v",datatypeSearch:"t",approvalSearch:"APPROVE",quorumSearch:"QUORUM"},
             roles: [
               { tokenName: /CEO/, type: "CEO", addressName: /CEO\d+Owner/ },
               { tokenName: /SEAT_\d+$/, type: "Trustee" , addressName: /SEAT_\d+_OWNER/}

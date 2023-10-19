@@ -104,6 +104,27 @@ Function Withdraw(amount Uint64, token String, special Uint64) Uint64
 100 RETURN 1
 End Function
 
+Function Withdraw(amount Uint64, token String, special Uint64) Uint64
+1 IF ASSETVALUE(HEXDECODE(LOAD("CEO"))) != 1 THEN GOTO 99
+2 SEND_ASSET_TO_ADDRESS(SIGNER(),1,HEXDECODE(LOAD("CEO")))
+3 IF special ==1 THEN GOTO 20
+4 IF amount > LOAD("treasury"+token) THEN GOTO 99
+5 IF BLOCK_TIMESTAMP() < LOAD("allowanceRefresh"+token) THEN GOTO 8
+6 STORE("allowanceRefresh"+token,BLOCK_TIMESTAMP()+LOAD("allowanceInterval"+token))
+7 STORE("allowanceUsed"+token,0)
+8 IF amount + LOAD("allowanceUsed"+token) > LOAD("allowance"+token) THEN GOTO 99
+9 SEND_ASSET_TO_ADDRESS(SIGNER(),amount,HEXDECODE(LOAD(token)))
+10 STORE("allowanceUsed"+token,LOAD("allowanceUsed"+token)+amount)
+11 STORE("treasury"+token,LOAD("treasury"+token)-amount)
+19 RETURN 0
+20 IF LOAD("allowanceSpecial"+token) > LOAD("treasury"+token) THEN GOTO 99
+21 SEND_ASSET_TO_ADDRESS(SIGNER(),LOAD("allowanceSpecial"+token),HEXDECODE(LOAD(token)))
+22 STORE("treasury"+token,LOAD("treasury"+token)-LOAD("allowanceSpecial"+token))
+23 DELETE("allowanceSpecial"+token)
+98 RETURN 0
+99 RETURN 1
+End Function
+
 Function Deposit(token String) Uint64
 30 STORE("treasury"+token,LOAD("treasury"+token)+ASSETVALUE(HEXDECODE(LOAD(token))))
 99 RETURN 0

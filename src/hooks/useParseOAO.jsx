@@ -23,7 +23,9 @@ export function useParseOAO() {
 
     for (var key of Object.keys(vars)) {
       if (OAO.treasury.treasurySearch.test(key)) {
-        let asset = key.substring(8);
+        let asset = key.substring(
+          OAO.treasury.treasurySearch.toString().length - 2
+        );
         console.log(asset, OAO.treasury.allowanceSearch.toString());
         let allowance =
           vars[
