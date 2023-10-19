@@ -51,7 +51,17 @@ export default function CodeProposal({ OAO, ceo, seat }) {
       asset = seat.scid;
     }
     let id = seat.id;
-    propose(OAO.scid, myHash, "", "", 0, asset, id);
+    propose(
+      OAO.scid,
+      myHash,
+      "",
+      "",
+      0,
+      asset,
+      id,
+      OAO.proposeFunction,
+      OAO.version
+    );
 
     //setActiveTab("proposals");
   };

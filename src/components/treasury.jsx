@@ -11,7 +11,9 @@ export default function Treasury({ OAO }) {
   const [asset, setAsset] = useState("DERO");
   const handleShow = () => setRequest(true);
   const handleClose = () => setRequest(false);
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     if (recurring) {
       return;
     } else {

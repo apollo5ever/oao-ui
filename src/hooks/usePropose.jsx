@@ -19,13 +19,14 @@ export function usePropose() {
     version
   ) => {
     let address = await getAddress();
-    console.log(hash, k, v, t, parseInt(id));
+    console.log("hash,k,v,t,id", hash, k, v, t, parseInt(id));
     let datatype = "S";
     if (t == 1) {
       datatype = "U";
     }
 
     if (version == "PI") {
+      console.log("propose version PI");
       let sc_rpc = [
         {
           name: "entrypoint",
