@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css"
 import { useContext, useState, useRef, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
@@ -13,6 +14,7 @@ import to from "await-to-js";
 import { useGetBalance } from "./useGetBalance";
 import hex2a from "./hex2a";
 import OAO from "./components/OAO";
+import Navbar, { OffCanvasExample } from './src/components/navBar.jsx'
 
 function App() {
   const [count, setCount] = useState(0);
