@@ -111,9 +111,9 @@ interface OAOContract {
             proposal:{hashSearch:"HASH",keySearch:"k",valueSearch:"v",datatypeSearch:"t",approvalSearch:"APPROVE",quorumSearch:"QUORUM"},
             roles: [
               { tokenName: /CEO/, type: "CEO", addressName: /CEO\d+Owner/ },
-              { tokenName: /SEAT_\d+$/, type: "Trustee" , addressName: /SEAT_\d+_OWNER/}
+              { tokenName: /seat\d+$/, type: "Trustee" , addressName: /trustee\d+/}
             ],
-            treasury:{treasurySearch:/TREASURY_/,allowanceSearch:/ALLOWANCE_/,assets:[]},
+            treasury:{treasurySearch:/treasury/,allowanceSearch:/allowance/,assets:[]},
             users:[],
             mutable: true,
             updateFunction: {name:"Update",params:[{name:"code",datatype:"S",label:"code"}],access:["CEO"]},
