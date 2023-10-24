@@ -19,6 +19,7 @@ import WebSocketService from "./webSocketService";
 import WalletToggle from "./components/rpcToggle";
 import DaemonToggle from "./components/daemonToggle";
 import { useGetAddress } from "./hooks/useGetAddress";
+import { useGetRole } from "./hooks/useGetRole";
 import { useInitializeWallet } from "./hooks/useInitializeWallet";
 import {
   Navbar,
@@ -32,6 +33,7 @@ import SaveOAO from "./components/saveOAO";
 
 function App() {
   const [count, setCount] = useState(0);
+  const [getRole] = useGetRole();
   const [getSC] = useGetSC();
   const [getBalance] = useGetBalance();
   const [state, setState] = useContext(LoginContext);
@@ -49,6 +51,14 @@ function App() {
   useEffect(() => {
     initializeWallet();
   }, []);
+
+  useEffect(() => {
+    const setRole = async () => {
+      const role = await getRole(state.OAO.users);
+      setState((state) => ({ ...state, role: role }));
+    };
+    setRole();
+  }, [state.OAO, state.walletMode, state.userAddress]);
 
   /*   useEffect(() => {
     const ws = new WebSocketService("ws://localhost:44326/xswd");
@@ -86,44 +96,10 @@ function App() {
     console.log(sc); */
 
     let OAO = await parseOAO(e.target.scid.value);
-    setState((state) => ({ ...state, OAO: OAO }));
-    try {
-      let ceoToken = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
-
-      let ceo = await getBalance(ceoToken);
-      console.log("balance ", ceoToken, ceo);
-      let seat = -1;
-      console.log(state);
-      for (var i = 0; i < OAO.users?.length; i++) {
-        /* if (OAO.users[i].index) {
-        continue;
-      } */
-        let bal = await getBalance(OAO.users[i].tokenName);
-        if (bal) {
-          console.log("balance for seat is ", bal);
-          seat = {
-            id: parseInt(OAO.users[i].index),
-            scid: OAO.users[i].tokenName,
-            owner: OAO.users[i].addressName,
-          };
-          console.log(seat);
-          break;
-        }
-
-        if (address === OAO.users[i].addressName) {
-          console.log("owner match!");
-          seat = {
-            id: OAO.users[i].index,
-            scid: OAO.users[i].tokenName,
-            owner: OAO.users[i].addressName,
-          };
-          break;
-        }
-      }
-      setState((state) => ({ ...state, ceo: ceo, seat: seat }));
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(OAO.users);
+    const role = await getRole(OAO.users);
+    console.log("role ", role);
+    setState((state) => ({ ...state, OAO: OAO, role: role }));
   };
 
   /*   useEffect(() => {
@@ -180,9 +156,7 @@ function App() {
           <DaemonToggle />
         </div>
       </Navbar>
-      {state.OAO.version && (
-        <MOAO OAO={state.OAO} seat={state.seat} ceo={state.ceo} />
-      )}
+      {state.OAO.version && <MOAO OAO={state.OAO} role={state.role} />}
     </>
   );
 }
