@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { SHA256 } from "crypto-js";
 import { usePropose } from "../hooks/usePropose";
 
-export default function CodeProposal({ OAO, ceo, seat }) {
+export default function CodeProposal({ OAO, role }) {
   const [textareaValue, setTextareaValue] = useState(OAO.code);
   const textareaRef = useRef(null);
   const [myHash, setMyHash] = useState("");
@@ -44,21 +44,15 @@ export default function CodeProposal({ OAO, ceo, seat }) {
 
   const handleSubmit = () => {
     console.log("Textarea hash:", myHash);
-    let asset;
-    if (ceo) {
-      asset = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
-    } else {
-      asset = seat.scid;
-    }
-    let id = seat.id;
+
     propose(
       OAO.scid,
       myHash,
       "",
       "",
       0,
-      asset,
-      id,
+      role.tokenName,
+      role.index,
       OAO.proposeFunction,
       OAO.version
     );

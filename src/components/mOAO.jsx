@@ -9,7 +9,7 @@ import "../App.css";
 import Proposals from "./proposals";
 import Code from "./code";
 
-export default function MOAO({ OAO, ceo, seat }) {
+export default function MOAO({ OAO, role }) {
   const [activeTab, setActiveTab] = useState("treasury");
   const [sendTransaction] = useSendTransaction();
 
@@ -23,7 +23,7 @@ export default function MOAO({ OAO, ceo, seat }) {
       ringsize: 2,
       transfers: [
         {
-          scid: seat.scid,
+          scid: role.tokenName,
           burn: 1,
         },
       ],
@@ -36,7 +36,7 @@ export default function MOAO({ OAO, ceo, seat }) {
         {
           name: "seat",
           datatype: "U",
-          value: seat.id,
+          value: role.index,
         },
       ],
     });
@@ -68,7 +68,7 @@ export default function MOAO({ OAO, ceo, seat }) {
         {
           name: "seat",
           datatype: "U",
-          value: seat.id,
+          value: role.index,
         },
       ],
     });
@@ -80,18 +80,12 @@ export default function MOAO({ OAO, ceo, seat }) {
     let v = e.target.v.value;
     let t = parseInt(e.target.t.value);
 
-    let asset = "";
-    if (ceo) {
-      asset = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
-    } else {
-      asset = seat.scid;
-    }
     sendTransaction({
       scid: OAO.scid,
       ringsize: 2,
       transfers: [
         {
-          scid: asset,
+          scid: role.tokenName,
           burn: 1,
         },
       ],
@@ -123,7 +117,7 @@ export default function MOAO({ OAO, ceo, seat }) {
         },
         {
           name: "seat",
-          value: parseInt(seat.id),
+          value: parseInt(role.index),
           datatype: "U",
         },
       ],
@@ -133,8 +127,14 @@ export default function MOAO({ OAO, ceo, seat }) {
   return (
     <>
       <h1>{OAO.name}</h1>
-      {ceo ? <>Welcome Mr. CEO</> : ""}
-      {seat.id ? <>Hello Board Member {seat.id}</> : ""}
+      {role && role.type == "CEO" ? (
+        <>Welcome Mr. CEO</>
+      ) : role ? (
+        <>Welcome Trustee #{role.index}</>
+      ) : (
+        ""
+      )}
+
       <Tabs
         id="controlled-tab-example"
         activeKey={activeTab}
@@ -152,7 +152,7 @@ export default function MOAO({ OAO, ceo, seat }) {
         </Tab>
         <Tab eventKey="proposals" title="Proposals">
           <div style={{ marginTop: "20px" }}>
-            <Proposals OAO={OAO} ceo={ceo} seat={seat} />
+            <Proposals OAO={OAO} role={role} />
           </div>
         </Tab>
       </Tabs>

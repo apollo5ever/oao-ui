@@ -10,6 +10,7 @@ const LoginProvider = (props) => {
     OAO: {},
     ceo: 0,
     seat: -1,
+    userRole: "user",
   });
   return (
     <LoginContext.Provider value={[state, setState]}>

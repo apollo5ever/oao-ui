@@ -11,7 +11,7 @@ import CodeProposal from "./codePropose";
 import Update from "./update";
 import Approve from "./approve";
 
-export default function Proposals({ OAO, ceo, seat }) {
+export default function Proposals({ OAO, role }) {
   const [key, setKey] = useState("");
   const [value, setValue] = useState("");
   const [hash, setHash] = useState("");
@@ -35,14 +35,6 @@ export default function Proposals({ OAO, ceo, seat }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("CEO", ceo);
-    let asset;
-    if (ceo) {
-      asset = OAO.users.filter((x) => x.type == "CEO")[0].tokenName;
-    } else {
-      asset = seat.scid;
-    }
-    let id = seat.id;
 
     propose(
       OAO.scid,
@@ -50,8 +42,8 @@ export default function Proposals({ OAO, ceo, seat }) {
       key,
       value,
       datatype,
-      asset,
-      id,
+      role.tokenName,
+      role.index,
       OAO.proposeFunction,
       OAO.version
     );
@@ -99,20 +91,15 @@ export default function Proposals({ OAO, ceo, seat }) {
           ) : OAO.proposal.hash &&
             OAO.proposal.approval >= OAO.proposal.quorum &&
             OAO.ceo ? (
-            <Update
-              OAO={OAO}
-              ceo={ceo}
-              seat={seat}
-              proposedHash={OAO.proposal.hash}
-            />
+            <Update OAO={OAO} role={role} proposedHash={OAO.proposal.hash} />
           ) : (
             ""
           )}
-          {seat.id >= 0 ? (
+          {role && role.index >= 0 ? (
             <Approve
-              index={seat.id}
+              index={role.index}
               voteFunction={OAO.voteFunction}
-              asset={seat.scid}
+              asset={role.tokenName}
               scid={OAO.scid}
             />
           ) : (
@@ -183,7 +170,7 @@ export default function Proposals({ OAO, ceo, seat }) {
             </Form>
           </Tab>
           <Tab eventKey="code" title="Code">
-            <CodeProposal OAO={OAO} ceo={ceo} seat={seat} />
+            <CodeProposal OAO={OAO} role={role} />
           </Tab>
         </Tabs>
       </div>
