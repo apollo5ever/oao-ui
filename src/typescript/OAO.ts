@@ -36,6 +36,7 @@ interface OAOContract {
     scid:     string;
     treasury: number;
     allowances: Allowance[];
+    balance: number;
   }
 
   interface Allowance {

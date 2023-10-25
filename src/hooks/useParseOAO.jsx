@@ -7,6 +7,7 @@ export function useParseOAO() {
 
   const parseOAO = async (scid) => {
     const data = await getSC(scid, true, true);
+    console.log("balance where", data);
     // check for version var
     let vars = data.stringkeys;
     let version = hex2a(vars?.OAO_VERSION);
@@ -36,10 +37,11 @@ export function useParseOAO() {
           allowances.push({ amount: allowance, role: "CEO" });
         }
         OAO.treasury.assets.push({
-          name: asset,
-          scid: "0000000000000000000000000000000000000000000000000000000000000000",
+          name: hex2a(vars[asset]),
+          scid: asset,
           treasury: vars[key],
           allowances: allowances,
+          balance: data.balances[asset],
         });
         /*   let asset = key.substring(9); // remove "TREASURY_" prefix
                let scid = vars[`SCID_${asset}`] || "0000000000000000000000000000000000000000000000000000000000000000";
