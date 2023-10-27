@@ -4,6 +4,7 @@ interface OAOContract {
     name: string;
     proposal?: Proposal;
     treasury: Treasury;
+    balances: RawBalance[];
     roles: Role[];
     users: Role[];
     mutable: boolean;
@@ -36,6 +37,11 @@ interface OAOContract {
     scid:     string;
     treasury: number;
     allowances: Allowance[];
+    balance: number;
+  }
+
+  interface RawBalance {
+    scid:    string;
     balance: number;
   }
 
@@ -95,6 +101,7 @@ interface OAOContract {
             { tokenName: /SEAT_\d+$/, type: "Trustee" , addressName: /SEAT_\d+_OWNER/}
           ],
           treasury:{treasurySearch:/treasury/,allowanceSearch:/allowance/,assets:[]},
+          balances:[],
           users:[],
           mutable: true,
           updateFunction: {name:"Update",params:[{name:"code",datatype:"S",label:"code"}],access:["CEO"]},
@@ -115,6 +122,7 @@ interface OAOContract {
               { tokenName: /seat\d+$/, type: "Trustee" , addressName: /trustee\d+/}
             ],
             treasury:{treasurySearch:/treasury/,allowanceSearch:/allowance/,assets:[]},
+            balances:[],
             users:[],
             mutable: true,
             updateFunction: {name:"Update",params:[{name:"code",datatype:"S",label:"code"}],access:["CEO"]},
