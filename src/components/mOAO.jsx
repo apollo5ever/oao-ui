@@ -68,7 +68,7 @@ export default function MOAO({ OAO, role }) {
         {
           name: "seat",
           datatype: "U",
-          value: role.index,
+          value: parseInt(role.index),
         },
       ],
     });
@@ -130,7 +130,19 @@ export default function MOAO({ OAO, role }) {
       {role && role.type == "CEO" ? (
         <>Welcome Mr. CEO</>
       ) : role ? (
-        <>Welcome Trustee #{role.index}</>
+        <>
+          Welcome Trustee #{role.index}{" "}
+          {OAO.balances.find((x) => x.scid == role.tokenName)?.balance == 1 && (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                claimSeat();
+              }}
+            >
+              click to claim seat
+            </div>
+          )}
+        </>
       ) : (
         ""
       )}

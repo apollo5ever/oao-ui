@@ -21,6 +21,10 @@ export function useParseOAO() {
     OAO.scid = scid;
     OAO.name = hex2a(vars?.OAO_NAME);
     OAO.code = data.code;
+    OAO.balances = Object.keys(data.balances).map((x) => ({
+      scid: x,
+      balance: data.balances[x],
+    }));
 
     for (var key of Object.keys(vars)) {
       if (OAO.treasury.treasurySearch.test(key)) {
