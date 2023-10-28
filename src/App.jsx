@@ -50,7 +50,15 @@ function App() {
 
   useEffect(() => {
     initializeWallet();
-  }, []);
+  }, [state.walletMode]);
+
+  useEffect(() => {
+    const setAddress = () => {
+      let address = getAddress();
+      setState((state) => ({ ...state, userAddress: address }));
+    };
+    // setAddress();
+  }, [state.ws]);
 
   useEffect(() => {
     const setRole = async () => {
@@ -58,7 +66,7 @@ function App() {
       setState((state) => ({ ...state, role: role }));
     };
     setRole();
-  }, [state.OAO, state.walletMode, state.userAddress]);
+  }, [state.OAO, state.ws]);
 
   /*   useEffect(() => {
     const ws = new WebSocketService("ws://localhost:44326/xswd");

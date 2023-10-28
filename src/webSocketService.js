@@ -15,7 +15,7 @@ class WebSocketService {
       console.log('Received message:', event.data);
       let data = JSON.parse(event.data)
       console.log("id: "+data.id)
-     if(data.id.startsWith("\"balance")){
+     if(data.id?.startsWith("\"balance")){
       console.log("user balance of "+data.id.substring(7,)+" is: "+data.result.balance)
      }
     };
@@ -35,6 +35,12 @@ class WebSocketService {
     closeConnection = () => {
       this.socket.close();
     };
+
+    getState = () => {
+      const status = this.socket.readyState
+      console.log("websocket status: ",status)
+      return status
+    }
   }
   
   export default WebSocketService;

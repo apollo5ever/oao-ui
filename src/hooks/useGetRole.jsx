@@ -7,7 +7,7 @@ export function useGetRole() {
 
   const getRole = async (users) => {
     const address = await getAddress();
-    for (let i = 0; i < users.length; i++) {
+    for (let i = 0; i < users?.length; i++) {
       let balance = await getBalance(users[i].tokenName);
       if (users[i].addressName == address) {
         balance = 1;
