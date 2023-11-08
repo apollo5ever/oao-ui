@@ -1,29 +1,29 @@
-/* Optimal Autonomous Organization with Update Function
+Function Initialize() Uint64
+1 STORE("CEO",HEX(SCID()))
+2 SEND_ASSET_TO_ADDRESS(SIGNER(),1,SCID())
+3 STORE("QUORUM",0)
+4 STORE("APPROVE",0)
+5 STORE("OAO_NAME","evil OAO")
+9 RETURN 0
+End Function
 
-The Update Function allows the contract to be updated with Board-approved code
-Written by Apollo
-
-*/
-Function Propose(hash String, k String, u Uint64, s String, t Uint64, seat Uint64) Uint64
-10 IF ASSETVALUE(HEXDECODE(LOAD("CEO"))) != 1 THEN GOTO 13
-11 SEND_ASSET_TO_ADDRESS(SIGNER(),1,HEXDECODE(LOAD("CEO")))
-12 GOTO 15
-13 IF ASSETVALUE(HEXDECODE(LOAD("SEAT_"+seat))) !=1 THEN GOTO 100
-14 SEND_ASSET_TO_ADDRESS(SIGNER(),1,HEXDECODE(LOAD("SEAT_"+seat)))
-15 STORE("APPROVE", 0)
-20 IF hash =="" THEN GOTO 40
-25 STORE("HASH",hash)
-30 STORE("k","")
-35 RETURN 0
-40 STORE("k",k)
-45 STORE("HASH","")
-49 STORE("t",t)
-50 IF t == 1 THEN GOTO 80
-60 STORE("s", s)
-70 RETURN 0
-80 STORE("u",u)
-90 RETURN 0
-100 RETURN 1
+Function Propose(hash String, k String, v String, t String, seat Uint64) Uint64
+1 IF ASSETVALUE(HEXDECODE(LOAD("CEO"))) != 1 THEN GOTO 4
+2 SEND_ASSET_TO_ADDRESS(SIGNER(),1,HEXDECODE(LOAD("CEO")))
+3 GOTO 6
+4 IF ASSETVALUE(HEXDECODE(LOAD("SEAT_"+seat))) !=1 THEN GOTO 99
+5 SEND_ASSET_TO_ADDRESS(SIGNER(),1,HEXDECODE(LOAD("SEAT_"+seat)))
+6 STORE("APPROVE", 0)
+7 IF hash =="" THEN GOTO 11
+8 STORE("HASH",hash)
+9 STORE("k","")
+10 RETURN 0
+11 STORE("k",k)
+12 STORE("HASH","")
+13 STORE("t",t)
+14 STORE("v", v)
+15 RETURN 0
+99 RETURN 1
 End Function
 
 Function Approve(seat Uint64) Uint64
@@ -53,24 +53,17 @@ Function Update(code String) Uint64
 100 RETURN 1
 End Function
 
-Function Store(k String, u Uint64, s String) Uint64
-20 IF k != LOAD("k") THEN GOTO 999
-40 IF LOAD("APPROVE") < LOAD("QUORUM") THEN GOTO 999
-45 STORE("APPROVE",0)
-50 dim t as Uint64
-60 let t = LOAD("t")
-110 IF t == 0 THEN GOTO 150
-120 IF t == 1 THEN GOTO 170
-130 IF s!=LOAD("s") THEN GOTO 999
-135 STORE(k, HEX(s))
-140 RETURN 0
-150 IF s!=LOAD("s") THEN GOTO 999
-155 STORE(k, s)
-160 RETURN 0
-170 IF u!=LOAD("u") THEN GOTO 999
-175 STORE(k,u)
-180 RETURN 0
-999 RETURN 1
+Function Store() Uint64
+1 IF LOAD("APPROVE") < LOAD("QUORUM") THEN GOTO 10
+2 STORE("APPROVE",0)
+3 IF LOAD("t") == "U" THEN GOTO 7
+4 STORE(LOAD("k"), LOAD("v"))
+5 STORE("k","")
+6 RETURN 0
+7 STORE(LOAD("k"),ATOI(LOAD("v")))
+8 STORE("k","")
+9 RETURN 0
+10 RETURN 1
 End Function
 
 Function Withdraw(amount Uint64, token String) Uint64

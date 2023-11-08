@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef, useCallback } from "react";
-import { LoginContext } from "./LoginContext";
+import { LoginContext } from "../LoginContext";
 import DeroBridgeApi from "dero-rpc-bridge-api";
 import to from "await-to-js";
 
@@ -45,8 +45,8 @@ export function useRPCWallet() {
     }
   });
 
-  const getAddress = useCallback(async () => {
-    const deroBridgeApi = deroBridgeApiRef.current;
+  const getAddress = useCallback(async (d) => {
+    const deroBridgeApi = d.current;
 
     const [err0, res0] = await to(deroBridgeApi.wallet("get-address", {}));
 
@@ -65,9 +65,9 @@ export function useRPCWallet() {
     }
   });
 
-  useEffect(() => {
+  /*  useEffect(() => {
     fetchWalletInfo(); //i feel like this shouldn't be here
-  }, []);
+  }, []); */
 
-  return [walletInfo, isLoading, error, fetchWalletInfo];
+  return [walletInfo, isLoading, error, fetchWalletInfo, getAddress];
 }

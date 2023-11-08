@@ -18,19 +18,19 @@
 
 ### ~~Parse proposal info from contract data (apollo)~~
 
-### Write function to make new proposal tx (apollo)
+### ~~Write function to make new proposal tx (apollo)~~
 
 ### ~~Write function to make approval tx (apollo)~~
 
-### Write function for Claim Seat tx
+### Write function for Claim Seat tx (apollo)
 
 ### Write function for Update tx
 
-### Write function for Store tx
+### ~~Write function for Store tx (apollo)~~
 
-### Write function to check user balance for OAO tokens
+### ~~Write function to check user balance for OAO tokens (apollo)~~
 
-### Store user's oao role in state
+### ~~Store user's oao role in state (apollo)~~
 
 ### Create UI for each contract call
 
